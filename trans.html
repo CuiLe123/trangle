@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>三角-矩形-五角星-六边</title>
+    <style>
+        canvas {
+            border: 1px solid #000;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="canvas" width="800" height="800"></canvas>
+    <script>
+        function drawStar() {
+            this.c = document.getElementById('canvas');
+            this.ctx = this.c.getContext('2d');
+            this.w = this.c.width;
+            this.h = this.c.height;
+            this.r = 150;
+            this.n = prompt('您想绘制几边形？');//改变n的值即可
+            this.x0 = this.w / 2;
+            this.y0 = this.h / 2;
+            this.angle = 2 * Math.PI / this.n - Math.PI / 2;
+            this.i = 1;
+        };
+        drawStar.prototype.render = function () {
+            this.ctx.beginPath();
+            this.ctx.moveTo(this.x0 + this.r, this.y0);
+
+            this.points = []; // 存储多边形的点
+            var x, y;
+            for (var i = 0; i < this.n; i++) {
+                x = this.x0 + this.r * Math.cos(this.angle);
+                y = this.y0 + this.r * Math.sin(this.angle);
+                this.points.push([x, y]);
+                this.angle += 2 * Math.PI / this.n;
+            }
+
+            this.i = 1;
+            this.point = this.points[0];
+            this.ctx.moveTo(this.point[0], this.point[1]);
+            while (this.i < this.n) {
+                this.point = this.points[this.i];
+                this.ctx.lineTo(this.point[0], this.point[1]);
+                this.i++;
+                if (this.i == this.n) {
+                    this.point = this.points[0];
+                    this.ctx.lineTo(this.point[0], this.point[1]);
+                    break;
+                }
+            };
+            this.ctx.stroke();
+            // this.ctx.fill();           
+        };
+        var dr = new drawStar();
+        dr.render();
+    </script>
+</body>
+
+</html>
